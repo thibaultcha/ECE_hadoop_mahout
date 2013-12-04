@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>fr.ece</groupId>
+  <artifactId>hadoop</artifactId>
+  <version>0.0.1</version>
+  <name>ECE_ING5_WebCrawler</name>
+  
+    <dependencies>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>1.2.0.1.3.2.0-111</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.hadoop</groupId>
+			<artifactId>hadoop-client</artifactId>
+			<version>1.2.0.1.3.2.0-111</version>
+		</dependency>
+		<dependency>
+            <groupId>org.apache.lucene</groupId>
+            <artifactId>lucene-analyzers</artifactId>
+            <version>3.6.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>jtidy</groupId>
+            <artifactId>jtidy</artifactId>
+            <version>4aug2000r7-dev</version>
+        </dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-assembly-plugin</artifactId>
+			 	<configuration>  
+			    	<descriptorRefs>
+			   			<descriptorRef>jar-with-dependencies</descriptorRef>
+			   		</descriptorRefs>
+			   		<archive>
+			        	<manifest>
+			            	<mainClass>hadoop.Main</mainClass>
+			            </manifest>
+			   		</archive>
+			 	</configuration>
+			</plugin>
+	 	</plugins>
+	</build>
+	
+</project>
