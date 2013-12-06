@@ -1,6 +1,5 @@
 package hadoop;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class Main {
 	    conf.setJobName("crawler");
 
 	    conf.setOutputKeyClass(Text.class);
-	    conf.setOutputValueClass(IntWritable.class);
+	    conf.setOutputValueClass(NullWritable.class);
 
 	    conf.setMapperClass(Map.class);
 	    conf.setCombinerClass(Reduce.class);
@@ -30,6 +29,8 @@ public class Main {
 	    conf.setInputFormat(TextInputFormat.class);
 	    conf.setOutputFormat(TextOutputFormat.class);
 
+	    //conf.setNumReduceTasks(0);
+	    
 	    try {
 			FileSystem fs = FileSystem.get(conf);
 			
