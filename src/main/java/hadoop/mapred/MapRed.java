@@ -24,7 +24,7 @@ public class MapRed {
 			String line = value.toString();
 		      
 		    line = Jsoup.parse(line).text();
-		      
+		    
 		    StringTokenizer tokenizer = new StringTokenizer(line);
 		    while (tokenizer.hasMoreTokens()) {
 		        word.set(tokenizer.nextToken());
