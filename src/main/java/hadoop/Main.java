@@ -32,6 +32,9 @@ public class Main {
 	    //conf.setNumReduceTasks(0);
 	    
 	    try {
+	    	System.out.println("Input dir: " + args[0]);
+	    	System.out.println("Output dir: " + args[1]);
+	    	
 			FileSystem fs = FileSystem.get(conf);
 			
 			ArrayList<FileStatus> files = new ArrayList<FileStatus>();
