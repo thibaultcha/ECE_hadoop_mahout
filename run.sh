@@ -1,31 +1,33 @@
 #!/bin/bash
 
 WORK_DIR=/user/root/edf
-algorithm=(naivebayes clean)
+algorithm=(naivebayes classify clean)
 
 if [ -n "$1" ]; then
   choice=$1
 else
   echo "Please select a number to choose the corresponding task to run"
-  echo "1. ${algorithm[0]}"
-  echo "2. ${algorithm[1]} -- cleans up the work area in $WORK_DIR"
+  echo "1. ${algorithm[0]} -- train mahout"
+  echo "2. ${algorithm[1]} -- classify a set"
+  echo "3. ${algorithm[2]} -- cleans up the work area in $WORK_DIR"
   read -p "Enter your choice : " choice
 fi
 
 alg=${algorithm[$choice-1]}
 
 # Cleaning stuff
-if [ "x$alg" != "xclean" ]; then
-  	echo "cleaning work directory at ${WORK_DIR}"
- 	if hadoop fs -test –d ${WORK_DIR}; then
+if [ "x$alg" == "xclean" ]; then
+  	echo "Cleaning work directory at ${WORK_DIR}"
+ 	if hadoop fs -test -d ${WORK_DIR} ; then
         hadoop fs -rmr ${WORK_DIR}
 	fi
 fi
 
+set -e
+
 # Training naive bayes
 if [ "x$alg" == "xnaivebayes" ]; then
-
-	set -e
+	
 	set -x
 
 	if [ ! -f data/tweets-train.tsv ]; then
@@ -34,7 +36,7 @@ if [ "x$alg" == "xnaivebayes" ]; then
 	fi
 
 	echo "Creating work directory at ${WORK_DIR}"
-	if hadoop fs -test –d ${WORK_DIR}; then
+	if hadoop fs -test -d ${WORK_DIR} ; then
         hadoop fs -rmr ${WORK_DIR}
 	fi
 	hadoop fs -mkdir ${WORK_DIR}
@@ -79,19 +81,67 @@ if [ "x$alg" == "xnaivebayes" ]; then
 	echo "Testing on holdout set"
 	mahout testnb \
 		-i ${WORK_DIR}/test-vectors \
-		-m ${WORK_DIR}/model -l labelindex \
+		-m ${WORK_DIR}/model \
+		-l ${WORK_DIR}/labelindex \
 		-ow -o ${WORK_DIR}/tweets-testing -c
 fi
 
-
-
-
-
 # Classify
-# hadoop fs -get labelindex labelindex
-# hadoop fs -get model model
-# hadoop fs -get tweets-vectors/dictionary.file-0 dictionary.file-0
-# hadoop fs -getmerge tweets-vectors/df-count df-count
-# python scripts/twitter_fetcher.py 1 > data/tweets-to-classify.tsv
-# java -cp target/mahout-classifier-1.0-jar-with-dependencies.jar \
-# 	mahout.classifier.Classifier model labelindex dictionary.file-0 df-count data/tweets-to-classify.tsv
+if [ "x$alg" == "xclassify" ]; then
+
+	set -x
+
+	if ! hadoop fs -test -e ${WORK_DIR}/labelindex ; then
+        echo "No index on HDFS at path ${WORK_DIR}/labelindex"
+        exit 1
+	fi
+	if ! hadoop fs -test -d ${WORK_DIR}/model ; then
+        echo "No model on HDFS at path ${WORK_DIR}/model"
+        exit 1
+	fi
+	if ! hadoop fs -test -d ${WORK_DIR}/tweets-vectors ; then
+        echo "No vector on HDFS at path ${WORK_DIR}/tweets-vectors"
+        exit 1
+	fi
+	if [ ! -f data/tweets-to-classify.tsv ]; then
+	    echo "No tweets to classify at path data/tweets-to-classify.tsv"
+	    exit 1
+	fi
+
+	echo "Retrieving index and model from HDFS"
+	hadoop fs -get \
+	${WORK_DIR}/labelindex \
+	labelindex
+	
+	hadoop fs -get \
+	${WORK_DIR}/model \
+	model
+	
+	hadoop fs -get \
+	${WORK_DIR}/tweets-vectors/dictionary.file-0 \
+	dictionary.file-0
+
+	hadoop fs -getmerge \
+	${WORK_DIR}/tweets-vectors/df-count \
+	df-count
+
+	#python scripts/twitter_fetcher.py 1 > data/tweets-to-classify.tsv
+	
+	read -p "Enter result filename (blank for STDOUT): " result
+	if [ -n "$result" ]; then
+		echo "Classifying tweets..."
+		java -cp target/mahout-classifier-1.0-jar-with-dependencies.jar \
+		mahout.classifier.Classifier model labelindex dictionary.file-0 df-count data/tweets-to-classify.tsv > ${result}
+		echo "Result outputed at ${result}"
+	else
+		echo "Classifying tweets..."
+		java -cp target/mahout-classifier-1.0-jar-with-dependencies.jar \
+		mahout.classifier.Classifier model labelindex dictionary.file-0 df-count data/tweets-to-classify.tsv
+	fi
+
+	echo "Cleaning local filesystem"
+	rm labelindex
+	rm df-count
+	rm dictionary.file-0
+	rm -rf model
+fi
