@@ -109,8 +109,6 @@ public class Classifier {
 			String tweetId = tokens[0];
 			String tweet = tokens[1];
 
-			System.out.println("Tweet: " + tweetId + "\t" + tweet);
-
 			Multiset<String> words = ConcurrentHashMultiset.create();
 			
 			// extract words from tweet
@@ -154,9 +152,9 @@ public class Classifier {
 					bestScore = score;
 					bestCategoryId = categoryId;
 				}
-				System.out.print("  " + labels.get(categoryId) + ": " + score);
 			}
-			System.out.println(" => " + labels.get(bestCategoryId));
+			System.out.println(labels.get(bestCategoryId) + "\t" + tweet);
+			
 		}
 		analyzer.close();
 		reader.close();
