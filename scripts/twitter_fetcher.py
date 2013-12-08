@@ -38,4 +38,6 @@ for tag in hashtags:
 		print len(results)
 		for result in results:
 			maxId = min(maxId, result.id)
-			print "%s" % (result.text.encode('utf-8').replace('\n', ' '))
+			# only keep tweets pointing to a web page
+			if result.text.find("http:") != -1:
+				print "%s	%s" % (result.id, result.text.encode('utf-8').replace('\n', ' '))
