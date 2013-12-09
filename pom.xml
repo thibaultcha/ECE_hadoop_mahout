@@ -35,7 +35,7 @@
 					</executions>
 					<archive>
 						<manifest>
-							<mainClass>mahout.classifier.TweetTSVToSeq</mainClass>
+							<mainClass>mahout.classifier.WebsiteToSeq</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>
