@@ -42,7 +42,7 @@ if [ "x$alg" == "xnaivebayes" ]; then
 	hadoop fs -mkdir ${WORK_DIR}
 
 	echo "Converting tsv to sequence files..."
-	java -cp target/mahout-classifier-1.0-jar-with-dependencies.jar \
+	java -cp mahout-classifier-1.0-jar-with-dependencies.jar \
 		mahout.classifier.TweetTSVToSeq data/tweets-train.tsv tweets-seq
 
 	echo "Uploading sequence file to HDFS..."
@@ -130,12 +130,12 @@ if [ "x$alg" == "xclassify" ]; then
 	read -p "Enter result filename (blank for STDOUT): " result
 	if [ -n "$result" ]; then
 		echo "Classifying tweets..."
-		java -cp target/mahout-classifier-1.0-jar-with-dependencies.jar \
+		java -cp mahout-classifier-1.0-jar-with-dependencies.jar \
 		mahout.classifier.Classifier model labelindex dictionary.file-0 df-count data/tweets-to-classify.tsv > ${result}
 		echo "Result outputed at ${result}"
 	else
 		echo "Classifying tweets..."
-		java -cp target/mahout-classifier-1.0-jar-with-dependencies.jar \
+		java -cp mahout-classifier-1.0-jar-with-dependencies.jar \
 		mahout.classifier.Classifier model labelindex dictionary.file-0 df-count data/tweets-to-classify.tsv
 	fi
 

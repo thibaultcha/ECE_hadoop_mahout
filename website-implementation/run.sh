@@ -55,12 +55,12 @@ if [ "x$alg" == "xnaivebayes" ]; then
 	hadoop fs -mkdir ${WORK_DIR}/crawled-all
 
 	echo "Extracting the shit out of the edf crawled data..."
-	hadoop jar mahout-classifier-1.0-jar-with-dependencies.jar \
+	hadoop jar mahout-website-classifier-1.0-jar-with-dependencies.jar \
 	${WORK_DIR}/crawled/edf \
 	${WORK_DIR}/crawled-all/edf
 
 	echo "Extracting the shit out of the soccer crawled data..."
-	hadoop jar mahout-classifier-1.0-jar-with-dependencies.jar \
+	hadoop jar mahout-website-classifier-1.0-jar-with-dependencies.jar \
 	${WORK_DIR}/crawled/soccer \
 	${WORK_DIR}/crawled-all/soccer
 

@@ -3,14 +3,12 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.ece</groupId>
-	<artifactId>mahout-classifier</artifactId>
+	<artifactId>mahout-website-classifier</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
 	<build>
-
 		<plugins>
-
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<configuration>
@@ -21,7 +19,6 @@
 			<plugin>
 				<artifactId>maven-assembly-plugin</artifactId>
 				<configuration>
-
 					<descriptorRefs>
 						<descriptorRef>jar-with-dependencies</descriptorRef>
 					</descriptorRefs>
@@ -61,11 +58,6 @@
 		<version>0.8</version>
 	</dependency>
 	<dependency>
-		<groupId>org.apache.mahout</groupId>
-		<artifactId>mahout-math</artifactId>
-		<version>0.8</version>
-	</dependency>
-	<dependency>
 	    <groupId>org.jsoup</groupId>
 	    <artifactId>jsoup</artifactId>
 	    <version>1.7.2</version>
@@ -73,21 +65,9 @@
 	<dependency>
         <groupId>org.apache.lucene</groupId>
         <artifactId>lucene-analyzers</artifactId>
-        <version>4.6.0</version>
-        <scope>compile</scope>
+        <version>3.6.2</version>
     </dependency>
 	</dependencies>
 
-	<repositories>
-		<repository>
-			<id>central</id>
-			<name>Maven Repository Switchboard</name>
-			<layout>default</layout>
-			<url>http://repo1.maven.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
 
 </project>

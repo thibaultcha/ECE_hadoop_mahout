@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>fr.ece</groupId>
-	<artifactId>mahout-classifier</artifactId>
+	<artifactId>mahout-tweets-classifier</artifactId>
 	<version>1.0</version>
 	<packaging>jar</packaging>
 
