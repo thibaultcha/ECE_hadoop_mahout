@@ -22,6 +22,18 @@ public class WebsiteToSeq {
 		}
 		String inputDirName = args[0];
 		String outputDirName = args[2];
+		String type = args[1];
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		Configuration configuration = new Configuration();
 		FileSystem fs = FileSystem.get(configuration);
 		Writer writer = new SequenceFile.Writer(fs, configuration, new Path(outputDirName + "/chunk-0"),
