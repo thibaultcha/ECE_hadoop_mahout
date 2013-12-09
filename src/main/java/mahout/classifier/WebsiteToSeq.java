@@ -1,72 +1,62 @@
 package mahout.classifier;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+import mahout.classifier.mapred.MapRed;
+import mahout.classifier.mapred.MapRed.Reduce;
+import mahout.classifier.mapred.MapRed.Map;
 
-import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.fs.FileSystem;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+
 import org.apache.hadoop.fs.Path;
-import org.apache.hadoop.io.SequenceFile;
-import org.apache.hadoop.io.SequenceFile.Writer;
 import org.apache.hadoop.io.Text;
-import org.jsoup.*;
+import org.apache.hadoop.mapred.FileInputFormat;
+import org.apache.hadoop.mapred.FileOutputFormat;
+import org.apache.hadoop.mapred.JobClient;
+import org.apache.hadoop.mapred.JobConf;
+import org.apache.hadoop.mapred.TextInputFormat;
+import org.apache.hadoop.mapred.TextOutputFormat;
 
 public class WebsiteToSeq {
 	public static void main(String args[]) throws Exception {
-		if (args.length != 3) {
-			System.err.println("Arguments: [input website directory] [type] [output sequence file]");
-			return;
+		String inputDirName = args[2];
+		String outputDirName = args[4];
+		String type = args[3];
+		
+    	System.out.println("Input dir: " + inputDirName);
+    	System.out.println("Output dir: " + outputDirName);
+		
+		JobConf conf = new JobConf(MapRed.class);
+	    conf.setJobName("sequencer");
+
+	    conf.setOutputKeyClass(Text.class);
+	    conf.setOutputValueClass(Text.class);
+
+	    conf.setMapperClass(Map.class);
+	    conf.setCombinerClass(Reduce.class);
+	    conf.setReducerClass(Reduce.class);
+
+	    conf.setInputFormat(TextInputFormat.class);
+	    conf.setOutputFormat(TextOutputFormat.class);
+	    
+	    conf.set("outputDir", outputDirName);
+	    conf.set("type", type);
+		
+	    try {
+			ArrayList<File> files = new ArrayList<File>();
+			
+			listFiles(new File(inputDirName), files);
+			for (File file : files) {
+		    	FileInputFormat.addInputPath(conf, new Path(file.getPath()));
+		    }
+			
+		    FileOutputFormat.setOutputPath(conf, new Path(outputDirName));
+		    
+		    JobClient.runJob(conf);
+		    
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
-		String inputDirName = args[0];
-		String outputDirName = args[2];
-		String type = args[1];
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		Configuration configuration = new Configuration();
-		FileSystem fs = FileSystem.get(configuration);
-		Writer writer = new SequenceFile.Writer(fs, configuration, new Path(outputDirName + "/chunk-0"),
-				Text.class, Text.class);
-		
-		ArrayList<File> files = new ArrayList<File>();
-		listFiles(new File(inputDirName), files);
-		
-		long count = 0;
-		Text key = new Text();
-		Text value = new Text();
-		for (File file : files) {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			while(true) {
-				String line = reader.readLine();
-				if (line == null) {
-					break;
-				}
-				line = Jsoup.parse(line).text();
-				StringTokenizer tokenizer = new StringTokenizer(line);
-			    while (tokenizer.hasMoreTokens()) {
-			    	key.set("/" + args[1]);
-					value.set(tokenizer.nextToken());
-					System.out.println(value);
-					writer.append(key, value);
-					count++;
-			    }
-			}
-			reader.close();
-		}
-		
-		writer.close();
-		System.out.println("Wrote " + count + " entries.");
 	}
 	
 	public static void listFiles(File f, ArrayList<File> filesArray) {
