@@ -2,6 +2,7 @@ package mahout.classifier.mapred;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.StringTokenizer;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
@@ -26,6 +27,7 @@ public class MapRed {
 		@Override
 		public void map(LongWritable key, Text value, OutputCollector<NullWritable, Text> output, Reporter reporter) throws IOException { 
 		    Document doc = Jsoup.parse(value.toString());
+		    doc.select("script, jscript").remove();
 		    String line = doc.body().text();
 		    
 		    /*StringTokenizer tokenizer = new StringTokenizer(line);
@@ -35,7 +37,7 @@ public class MapRed {
 				output.collect(NullWritable.get(), word);
 		    }*/
 		    
-	    	TokenStream stream  = analyzer.tokenStream(null, new StringReader(line));
+	    	TokenStream stream = analyzer.tokenStream(null, new StringReader(line));
 	        stream.reset();
 	        while (stream.incrementToken()) {
 	        	word = new Text(stream.getAttribute(CharTermAttribute.class).toString());
