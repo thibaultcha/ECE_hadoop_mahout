@@ -154,9 +154,8 @@ public class Classifier {
 					bestScore = score;
 					bestCategoryId = categoryId;
 				}
-				System.out.print("  " + labels.get(categoryId) + ": " + score);
 			}
-			System.out.println(" => " + labels.get(bestCategoryId));
+			System.out.println(labels.get(bestCategoryId) + "\t" + tweet);
 		}
 		analyzer.close();
 		reader.close();
