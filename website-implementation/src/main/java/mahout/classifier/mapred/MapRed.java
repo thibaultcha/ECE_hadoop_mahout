@@ -27,7 +27,7 @@ public class MapRed {
 		@Override
 		public void map(LongWritable key, Text value, OutputCollector<NullWritable, Text> output, Reporter reporter) throws IOException { 
 		    Document doc = Jsoup.parse(value.toString());
-		    doc.select("script, jscript").remove();
+		    doc.body().select("script, jscript").remove();
 		    String line = doc.body().text();
 		    
 		    /*StringTokenizer tokenizer = new StringTokenizer(line);

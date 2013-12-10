@@ -35,7 +35,8 @@ public class WebsiteToSeq {
 	    conf.setMapperClass(Map.class);
 	    // using the method 2 to create sequence files (see run.sh and WordsToSeq), we only want a single output file
 	    // so this becomes 1 and not 0
-	    conf.setNumReduceTasks(1);
+	    //conf.setNumReduceTasks(1);
+	    conf.setNumReduceTasks(0);
 
 	    conf.setInputFormat(TextInputFormat.class);
 	    conf.setOutputKeyClass(NullWritable.class);

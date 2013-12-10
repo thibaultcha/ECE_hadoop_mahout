@@ -64,11 +64,26 @@ if [ "x$alg" == "xnaivebayes" ]; then
 	${WORK_DIR}/crawled/soccer \
 	${WORK_DIR}/crawled-all/soccer
 
+	# method 1
 	echo "Converting data to sequence files..."
 	mahout seqdirectory \
 	-i ${WORK_DIR}/crawled-all \
-	-o ${WORK_DIR}/crawled-seq -ow
+	-o ${WORK_DIR}/crawled-seq -ow -c
 
+	# method 2
+	# echo "Fetching parsed data"
+	# hadoop fs -get ${WORK_DIR}/crawled-all/ .
+
+	# echo "Converting parsed data to sequence file"
+	# java -cp mahout-website-classifier-1.0-jar-with-dependencies.jar \
+	# 	mahout.classifier.WordsToSeq crawled-all/edf/part-00000 crawled-all/soccer/part-00000 crawled-seq
+
+	# echo "Uploading sequence file to HDFS"
+	# hadoop fs -put crawled-seq ${WORK_DIR}
+	# rm -rf crawled-seq
+	# rm -rf crawled-all
+
+	# then
 	echo "Converting sequence files to vectors..."
 	mahout seq2sparse \
 		-i ${WORK_DIR}/crawled-seq \
@@ -86,21 +101,21 @@ if [ "x$alg" == "xnaivebayes" ]; then
 		-i ${WORK_DIR}/train-vectors -el \
 		-li ${WORK_DIR}/labelindex \
 		-o ${WORK_DIR}/model \
-		-ow
+		-ow -c
 
 	echo "Self testing on training set"
 	mahout testnb \
 		-i ${WORK_DIR}/train-vectors \
 		-m ${WORK_DIR}/model \
 		-l ${WORK_DIR}/labelindex \
-		-ow -o ${WORK_DIR}/crawled-testing
+		-ow -o ${WORK_DIR}/crawled-testing -c
 
 	echo "Testing on holdout set"
 	mahout testnb \
 		-i ${WORK_DIR}/test-vectors \
 		-m ${WORK_DIR}/model \
 		-l ${WORK_DIR}/labelindex \
-		-ow -o ${WORK_DIR}/crawled-testing
+		-ow -o ${WORK_DIR}/crawled-testing -c
 fi
 
 # Classify
