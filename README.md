@@ -1,6 +1,6 @@
 # Mahout Classification
 
-I made two implementations: `tweets-implementation`, based on an exemple on the Internet that I have adapted to my needs, to test and understand how Mahout works. And one following the guidelines for the assignment in `website-implementation`.
+I made two implementations: `tweets-implementation`, based on an [example](http://chimpler.wordpress.com/2013/03/13/using-the-mahout-naive-bayes-classifier-to-automatically-classify-twitter-messages/) on the Internet that I have adapted to my needs, to test and understand how Mahout works. And one following the guidelines for the assignment in `website-implementation`.
 
 **Both train and test data**, but for now, the `tweets-implementation` can also run mahout on a real set of data.
 
