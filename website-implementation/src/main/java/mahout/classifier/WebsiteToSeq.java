@@ -1,7 +1,6 @@
 package mahout.classifier;
 
 import mahout.classifier.mapred.MapRed;
-//import mahout.classifier.mapred.MapRed.Reduce;
 import mahout.classifier.mapred.MapRed.Map;
 
 import java.io.IOException;
@@ -22,7 +21,7 @@ import org.apache.hadoop.mapred.TextOutputFormat;
 public class WebsiteToSeq {
 	public static void main(String args[]) throws Exception {
 		if (args.length != 2) {
-			System.out.println("Usage: [input dir] [output dir]");
+			System.out.println("Usage: [input website dir] [output dir]");
 		}
 		String inputDirName = args[0];
 		String outputDirName = args[1];
@@ -39,8 +38,9 @@ public class WebsiteToSeq {
 	    conf.setInputFormat(TextInputFormat.class);
 	    conf.setOutputKeyClass(NullWritable.class);
 	    conf.setOutputValueClass(Text.class);
+	    //conf.setOutputFormat(MultipleTextOutputFormat.class);
 	    conf.setOutputFormat(TextOutputFormat.class);
-		
+	
 	    try {
 			ArrayList<FileStatus> files = new ArrayList<FileStatus>();
 			

@@ -2,8 +2,6 @@ package mahout.classifier.mapred;
 
 import java.io.IOException;
 import java.io.StringReader;
-//import java.util.Iterator;
-import java.util.StringTokenizer;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;

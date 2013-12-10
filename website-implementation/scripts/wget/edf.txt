@@ -1,1 +1,3 @@
 http://france.edf.com
+https://bleuciel.edf.com
+http://fondation.edf.com/

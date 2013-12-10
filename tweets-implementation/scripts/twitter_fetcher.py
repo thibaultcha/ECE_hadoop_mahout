@@ -35,7 +35,6 @@ for tag in hashtags:
 	maxId = 999999999999999999999
 	for i in range(1, pageCount + 1):
 		results = api.search(q='#%s' % tag, max_id=maxId, count=100)
-		print len(results)
 		for result in results:
 			maxId = min(maxId, result.id)
 			# only keep tweets pointing to a web page

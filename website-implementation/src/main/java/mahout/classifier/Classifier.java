@@ -67,8 +67,8 @@ public class Classifier {
 	}
 
 	public static void main(String[] args) throws Exception {
-		if (args.length < 5) {
-			System.out.println("Arguments: [model] [label index] [dictionnary] [document frequency] [tweet file]");
+		if (args.length != 5) {
+			System.out.println("Arguments: [model] [label index] [dictionnary] [document frequency] [tweets file]");
 			return;
 		}
 		String modelPath = args[0];
@@ -89,7 +89,6 @@ public class Classifier {
 		Map<String, Integer> dictionary = readDictionnary(configuration, new Path(dictionaryPath));
 		Map<Integer, Long> documentFrequency = readDocumentFrequency(configuration, new Path(documentFrequencyPath));
 
-		
 		// analyzer used to extract word from tweet
 		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_43);
 		
@@ -105,10 +104,7 @@ public class Classifier {
 				break;
 			}
 			
-			String[] tokens = line.split("\t", 2);
-			String tweetId = tokens[0];
-			String tweet = tokens[1];
-
+			String tweet = line;
 			Multiset<String> words = ConcurrentHashMultiset.create();
 			
 			// extract words from tweet
