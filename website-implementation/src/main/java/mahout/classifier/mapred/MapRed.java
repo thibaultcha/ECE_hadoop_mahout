@@ -39,10 +39,13 @@ public class MapRed {
 		    
 	    	TokenStream stream = analyzer.tokenStream(null, new StringReader(line));
 	        stream.reset();
+	        //String str = new String();
 	        while (stream.incrementToken()) {
 	        	word = new Text(stream.getAttribute(CharTermAttribute.class).toString());
 	        	output.collect(NullWritable.get(), word);
+	        	//str = stream.getAttribute(CharTermAttribute.class).toString() + " ";
 	        }
+	        //output.collect(NullWritable.get(), new Text(str));
 		}
 	}
 }
