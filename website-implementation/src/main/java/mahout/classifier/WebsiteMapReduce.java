@@ -16,10 +16,9 @@ import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
-import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapred.TextOutputFormat;
 
-public class WebsiteToSeq {
+public class WebsiteMapReduce {
 	public static void main(String args[]) throws Exception {
 		if (args.length != 2) {
 			System.out.println("Usage: [input website dir] [output dir]");
