@@ -25,25 +25,24 @@ public class MapRed {
 		@Override
 		public void map(LongWritable key, Text value, OutputCollector<NullWritable, Text> output, Reporter reporter) throws IOException {
 			// ok back to this then (was trying something else on a local branch)
-		    Document doc = Jsoup.parse(value.toString());
-		    doc.body().select("script, jscript, style").remove();
-		    String line = doc.body().text();
+		    //Document doc = Jsoup.parse(value.toString());
+		    //doc.select("script").remove();
+		    //String content = doc.text();
 		    
-		    /*StringTokenizer tokenizer = new StringTokenizer(line);
-		    while (tokenizer.hasMoreTokens()) {
-		    	word = new Text(tokenizer.nextToken());
-				//System.out.println(value);
-				output.collect(NullWritable.get(), word);
-		    }*/
+		    /*StringReader sr = new StringReader(content);
+		    StringBuffer sw = new StringBuffer();
 		    
-	    	TokenStream stream = analyzer.tokenStream("text", new StringReader(line));
+	    	TokenStream stream = analyzer.tokenStream("text", sr);
+	    	CharTermAttribute cattr = stream.addAttribute(CharTermAttribute.class);
+	      
 	        stream.reset();
-	        stream.addAttribute(CharTermAttribute.class);
-	        StringBuffer str = new StringBuffer();
 	        while (stream.incrementToken()) {
-	        	str.append(stream.getAttribute(CharTermAttribute.class).toString());
+	        	sw.append(cattr.toString() + " ");
 	        }
-	        output.collect(NullWritable.get(), new Text(str.toString()));
+	        
+	        sr.close();
+	        stream.close();*/
+	        output.collect(NullWritable.get(), new Text(value.toString() + "\n\n\n\n\n\n\n\n\n ~~~~~~~======== END OF THIS MAP ========~~~~~~~~ \n\n\n\n\n\n\n\n"));
 		}
 	}
 }
