@@ -54,6 +54,7 @@ public class Classifier {
 		Map<String, Integer> dictionnary = new HashMap<String, Integer>();
 		for (Pair<Text, IntWritable> pair : new SequenceFileIterable<Text, IntWritable>(dictionnaryPath, true, conf)) {
 			dictionnary.put(pair.getFirst().toString(), pair.getSecond().get());
+			System.out.println(pair.getFirst().toString() + " === " + pair.getSecond().get());
 		}
 		return dictionnary;
 	}
@@ -62,6 +63,7 @@ public class Classifier {
 		Map<Integer, Long> documentFrequency = new HashMap<Integer, Long>();
 		for (Pair<IntWritable, LongWritable> pair : new SequenceFileIterable<IntWritable, LongWritable>(documentFrequencyPath, true, conf)) {
 			documentFrequency.put(pair.getFirst().get(), pair.getSecond().get());
+			System.out.println(pair.getFirst().get() + " --- " + pair.getSecond().get());
 		}
 		return documentFrequency;
 	}

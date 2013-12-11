@@ -26,6 +26,14 @@ Crawl data from websites, run a map job on it to extract content from HTML throu
 
 The script allows you to train and test the data. Type 1 and train it.
 
+#### Test real data
+
+currently it really lake of precision
+parse in map in impossible beceause of line by line
+I sanitized before to test (that's not the exercise)
+it's better
+still less precise, too much vocabulary
+
 ## tweets-implementation
 
 Fetch tweets with a Python script. Provide a file with some classified tweets to create the vectors (I did this already on ~60 tweets, not enough but it's boring). Then create vectors from that file, and train and test mahout on it. It can even test a real data set to classify it.
