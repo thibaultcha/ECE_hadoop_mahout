@@ -32,7 +32,7 @@
 					</executions>
 					<archive>
 						<manifest>
-							<mainClass>mahout.classifier.WebsiteToSeq</mainClass>
+							<mainClass>mahout.classifier.WebsiteMapReduce</mainClass>
 							<addClasspath>true</addClasspath>
 						</manifest>
 					</archive>

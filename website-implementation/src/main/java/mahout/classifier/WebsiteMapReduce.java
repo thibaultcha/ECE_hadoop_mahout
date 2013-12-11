@@ -22,7 +22,6 @@ public class WebsiteMapReduce {
 	public static void main(String args[]) throws Exception {
 		if (args.length != 2) {
 			System.out.println("Usage: [input website dir] [output dir]");
-			return;
 		}
 		String inputDirName = args[0];
 		String outputDirName = args[1];
@@ -31,7 +30,7 @@ public class WebsiteMapReduce {
     	System.out.println("Output dir: " + outputDirName);
 		
 		JobConf conf = new JobConf(MapRed.class);
-	    conf.setJobName("html cleaner");
+	    conf.setJobName("parser");
 	    
 	    conf.setMapperClass(Map.class);
 	    conf.setNumReduceTasks(0);
@@ -46,7 +45,7 @@ public class WebsiteMapReduce {
 			
 			listFiles(new Path(inputDirName), files, FileSystem.get(conf));
 			for (FileStatus file : files) {
-		    	WholeFileInputFormat.addInputPath(conf, file.getPath());
+		    	FileInputFormat.addInputPath(conf, file.getPath());
 		    }
 			
 		    FileOutputFormat.setOutputPath(conf, new Path(outputDirName));

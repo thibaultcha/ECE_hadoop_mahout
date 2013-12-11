@@ -7,7 +7,7 @@ Guillaume Naudin
 
 I made two implementations: `tweets-implementation`, based on an [example](http://chimpler.wordpress.com/2013/03/13/using-the-mahout-naive-bayes-classifier-to-automatically-classify-twitter-messages/) on the Internet that I have adapted to my needs, to test and understand how Mahout works. And one following the guidelines for the assignment in `website-implementation`.
 
-**Both train and test data**, but for now, the `tweets-implementation` can also run mahout on a real set of data.
+Both train, test data and can even test a real data set.
 
 Tested on the Hortonworks sandbox.
 
@@ -25,7 +25,7 @@ Crawl data from websites, run a map job on it to extract content from HTML throu
 
 - Run the crawler `wget/wget.sh`
 
-- Run the script
+- Run the script (after choosing your WORK_DIR)
 
 `./run.sh`
 
@@ -37,7 +37,7 @@ The script allows you to train and test the data. Type 1 and train it.
 
 `python twitter_fetcher 10 > tweets-to-classify.tsv`
 
-The script needs the [tweepy](https://github.com/tweepy/tweepy) module. But I have provided a file in `data/` already.
+The script needs the [tweepy](https://github.com/tweepy/tweepy) module. But I have provided a file in `/scripts` already.
 
 - Make sure you have `tweets-to-classify.tsv` on your machine and that you have already trained mahout
 
@@ -61,7 +61,7 @@ Fetch tweets with a Python script. Provide a file with some classified tweets to
 
 - Upload `mahout-tweets-classifier-1.0-jar-with-dependencies.jar` and the `data` directory to your machine
 
-- Run the script
+- Run the script (after choosing your WORK_DIR)
 
 `./run.sh`
 

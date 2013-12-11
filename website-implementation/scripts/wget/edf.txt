@@ -1,3 +1,5 @@
 http://france.edf.com
 https://bleuciel.edf.com
 http://fondation.edf.com/
+http://www.edf.com
+http://www.edf-en.fr
