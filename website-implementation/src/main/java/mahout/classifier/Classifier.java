@@ -29,6 +29,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.fr.FrenchAnalyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.util.Version;
@@ -90,7 +91,7 @@ public class Classifier {
 		Map<Integer, Long> documentFrequency = readDocumentFrequency(configuration, new Path(documentFrequencyPath));
 
 		// analyzer used to extract word from tweet
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_43);
+		Analyzer analyzer = new FrenchAnalyzer(Version.LUCENE_43);
 		
 		int labelCount = labels.size();
 		int documentCount = documentFrequency.get(-1).intValue();

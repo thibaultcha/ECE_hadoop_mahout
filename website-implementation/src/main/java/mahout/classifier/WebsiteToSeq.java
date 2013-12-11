@@ -1,5 +1,6 @@
 package mahout.classifier;
 
+import mahout.classifier.format.WholeFileInputFormat;
 import mahout.classifier.mapred.MapRed;
 import mahout.classifier.mapred.MapRed.Map;
 
@@ -30,15 +31,14 @@ public class WebsiteToSeq {
     	System.out.println("Output dir: " + outputDirName);
 		
 		JobConf conf = new JobConf(MapRed.class);
-	    conf.setJobName("sequencer");
+	    conf.setJobName("parser");
 	    
 	    conf.setMapperClass(Map.class);
 	    conf.setNumReduceTasks(0);
 
-	    conf.setInputFormat(TextInputFormat.class);
+	    conf.setInputFormat(WholeFileInputFormat.class);
 	    conf.setOutputKeyClass(NullWritable.class);
 	    conf.setOutputValueClass(Text.class);
-	    //conf.setOutputFormat(MultipleTextOutputFormat.class);
 	    conf.setOutputFormat(TextOutputFormat.class);
 	
 	    try {
