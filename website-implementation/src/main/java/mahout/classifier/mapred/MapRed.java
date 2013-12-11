@@ -4,10 +4,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.StringReader;
-import java.util.StringTokenizer;
 
 import org.apache.hadoop.io.BytesWritable;
-import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.MapReduceBase;
@@ -24,31 +22,11 @@ import org.jsoup.nodes.Document;
 public class MapRed {
 
 	public static class Map extends MapReduceBase implements Mapper<Text, BytesWritable, NullWritable, Text> {
-	    private Text word = new Text();
 		private FrenchAnalyzer analyzer = new FrenchAnalyzer(Version.LUCENE_43);
 				
 		@Override
 		public void map(Text key, BytesWritable value, OutputCollector<NullWritable, Text> output, Reporter reporter) throws IOException { 
-			// ok back to this then (was trying something else on a local branch)
-		    //Document doc = Jsoup.parse(value.toString());
-		    //doc.select("script").remove();
-		    //String content = doc.text();
-		    
-		    /*StringReader sr = new StringReader(content);
-		    StringBuffer sw = new StringBuffer();
-		    
-	    	TokenStream stream = analyzer.tokenStream("text", sr);
-	    	CharTermAttribute cattr = stream.addAttribute(CharTermAttribute.class);
-	      
-	        stream.reset();
-	        while (stream.incrementToken()) {
-	        	sw.append(cattr.toString() + " ");
-	        }
-	        
-	        sr.close();
-	        stream.close();*/
-			
-			// Reading byets from WholeInputFile
+			// Reading bytes from WholeInputFile
 			byte[] raw = value.getBytes();
 		    int size = raw.length;
 		    InputStream is = null;
@@ -56,7 +34,7 @@ public class MapRed {
 		    is = new ByteArrayInputStream(raw);
 		    is.read(b);
 		    
-		    // parsing HTML
+		    // Parsing HTML
 		    Document doc = Jsoup.parse(new String(b));
 		    String content = doc.text();
 		    
