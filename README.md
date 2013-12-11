@@ -7,7 +7,7 @@ Guillaume Naudin
 
 I made two implementations: `tweets-implementation`, based on an [example](http://chimpler.wordpress.com/2013/03/13/using-the-mahout-naive-bayes-classifier-to-automatically-classify-twitter-messages/) on the Internet that I have adapted to my needs, to test and understand how Mahout works. And one following the guidelines for the assignment in `website-implementation`.
 
-Both train, test data and can even test a real data set.
+**Both train, test data and can even test a real data set.**
 
 Tested on the Hortonworks sandbox.
 
