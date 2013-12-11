@@ -12,6 +12,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapred.FileInputFormat;
 import org.apache.hadoop.mapred.FileOutputFormat;
 import org.apache.hadoop.mapred.JobClient;
 import org.apache.hadoop.mapred.JobConf;
@@ -44,7 +45,7 @@ public class WebsiteMapReduce {
 			
 			listFiles(new Path(inputDirName), files, FileSystem.get(conf));
 			for (FileStatus file : files) {
-		    	WholeFileInputFormat.addInputPath(conf, file.getPath());
+		    	FileInputFormat.addInputPath(conf, file.getPath());
 		    }
 			
 		    FileOutputFormat.setOutputPath(conf, new Path(outputDirName));
