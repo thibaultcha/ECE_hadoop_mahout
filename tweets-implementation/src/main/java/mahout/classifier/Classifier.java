@@ -49,113 +49,113 @@ import com.google.common.collect.Multiset;
  * http://www.chimpler.com
  */
 public class Classifier {
-	
-	public static Map<String, Integer> readDictionnary(Configuration conf, Path dictionnaryPath) {
-		Map<String, Integer> dictionnary = new HashMap<String, Integer>();
-		for (Pair<Text, IntWritable> pair : new SequenceFileIterable<Text, IntWritable>(dictionnaryPath, true, conf)) {
-			dictionnary.put(pair.getFirst().toString(), pair.getSecond().get());
-		}
-		return dictionnary;
-	}
+    
+    public static Map<String, Integer> readDictionnary(Configuration conf, Path dictionnaryPath) {
+        Map<String, Integer> dictionnary = new HashMap<String, Integer>();
+        for (Pair<Text, IntWritable> pair : new SequenceFileIterable<Text, IntWritable>(dictionnaryPath, true, conf)) {
+            dictionnary.put(pair.getFirst().toString(), pair.getSecond().get());
+        }
+        return dictionnary;
+    }
 
-	public static Map<Integer, Long> readDocumentFrequency(Configuration conf, Path documentFrequencyPath) {
-		Map<Integer, Long> documentFrequency = new HashMap<Integer, Long>();
-		for (Pair<IntWritable, LongWritable> pair : new SequenceFileIterable<IntWritable, LongWritable>(documentFrequencyPath, true, conf)) {
-			documentFrequency.put(pair.getFirst().get(), pair.getSecond().get());
-		}
-		return documentFrequency;
-	}
+    public static Map<Integer, Long> readDocumentFrequency(Configuration conf, Path documentFrequencyPath) {
+        Map<Integer, Long> documentFrequency = new HashMap<Integer, Long>();
+        for (Pair<IntWritable, LongWritable> pair : new SequenceFileIterable<IntWritable, LongWritable>(documentFrequencyPath, true, conf)) {
+            documentFrequency.put(pair.getFirst().get(), pair.getSecond().get());
+        }
+        return documentFrequency;
+    }
 
-	public static void main(String[] args) throws Exception {
-		if (args.length < 5) {
-			System.out.println("Arguments: [model] [label index] [dictionnary] [document frequency] [tweet file]");
-			return;
-		}
-		String modelPath = args[0];
-		String labelIndexPath = args[1];
-		String dictionaryPath = args[2];
-		String documentFrequencyPath = args[3];
-		String tweetsPath = args[4];
-		
-		Configuration configuration = new Configuration();
+    public static void main(String[] args) throws Exception {
+        if (args.length < 5) {
+            System.out.println("Arguments: [model] [label index] [dictionnary] [document frequency] [tweet file]");
+            return;
+        }
+        String modelPath = args[0];
+        String labelIndexPath = args[1];
+        String dictionaryPath = args[2];
+        String documentFrequencyPath = args[3];
+        String tweetsPath = args[4];
+        
+        Configuration configuration = new Configuration();
 
-		// model is a matrix (wordId, labelId) => probability score
-		NaiveBayesModel model = NaiveBayesModel.materialize(new Path(modelPath), configuration);
-		
-		StandardNaiveBayesClassifier classifier = new StandardNaiveBayesClassifier(model);
+        // model is a matrix (wordId, labelId) => probability score
+        NaiveBayesModel model = NaiveBayesModel.materialize(new Path(modelPath), configuration);
+        
+        StandardNaiveBayesClassifier classifier = new StandardNaiveBayesClassifier(model);
 
-		// labels is a map label => classId
-		Map<Integer, String> labels = BayesUtils.readLabelIndex(configuration, new Path(labelIndexPath));
-		Map<String, Integer> dictionary = readDictionnary(configuration, new Path(dictionaryPath));
-		Map<Integer, Long> documentFrequency = readDocumentFrequency(configuration, new Path(documentFrequencyPath));
+        // labels is a map label => classId
+        Map<Integer, String> labels = BayesUtils.readLabelIndex(configuration, new Path(labelIndexPath));
+        Map<String, Integer> dictionary = readDictionnary(configuration, new Path(dictionaryPath));
+        Map<Integer, Long> documentFrequency = readDocumentFrequency(configuration, new Path(documentFrequencyPath));
 
-		
-		// analyzer used to extract word from tweet
-		Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_43);
-		
-		int labelCount = labels.size();
-		int documentCount = documentFrequency.get(-1).intValue();
-		
-		System.out.println("Number of labels: " + labelCount);
-		System.out.println("Number of documents in training set: " + documentCount);
-		BufferedReader reader = new BufferedReader(new FileReader(tweetsPath));
-		while(true) {
-			String line = reader.readLine();
-			if (line == null) {
-				break;
-			}
-			
-			String[] tokens = line.split("\t", 2);
-			String tweetId = tokens[0];
-			String tweet = tokens[1];
+        
+        // analyzer used to extract word from tweet
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_43);
+        
+        int labelCount = labels.size();
+        int documentCount = documentFrequency.get(-1).intValue();
+        
+        System.out.println("Number of labels: " + labelCount);
+        System.out.println("Number of documents in training set: " + documentCount);
+        BufferedReader reader = new BufferedReader(new FileReader(tweetsPath));
+        while(true) {
+            String line = reader.readLine();
+            if (line == null) {
+                break;
+            }
+            
+            String[] tokens = line.split("\t", 2);
+            String tweetId = tokens[0];
+            String tweet = tokens[1];
 
-			Multiset<String> words = ConcurrentHashMultiset.create();
-			
-			// extract words from tweet
-			TokenStream ts = analyzer.tokenStream("text", new StringReader(tweet));
-			CharTermAttribute termAtt = ts.addAttribute(CharTermAttribute.class);
-			ts.reset();
-			int wordCount = 0;
-			while (ts.incrementToken()) {
-				if (termAtt.length() > 0) {
-					String word = ts.getAttribute(CharTermAttribute.class).toString();
-					Integer wordId = dictionary.get(word);
-					// if the word is not in the dictionary, skip it
-					if (wordId != null) {
-						words.add(word);
-						wordCount++;
-					}
-				}
-			}
+            Multiset<String> words = ConcurrentHashMultiset.create();
+            
+            // extract words from tweet
+            TokenStream ts = analyzer.tokenStream("text", new StringReader(tweet));
+            CharTermAttribute termAtt = ts.addAttribute(CharTermAttribute.class);
+            ts.reset();
+            int wordCount = 0;
+            while (ts.incrementToken()) {
+                if (termAtt.length() > 0) {
+                    String word = ts.getAttribute(CharTermAttribute.class).toString();
+                    Integer wordId = dictionary.get(word);
+                    // if the word is not in the dictionary, skip it
+                    if (wordId != null) {
+                        words.add(word);
+                        wordCount++;
+                    }
+                }
+            }
 
-			// create vector wordId => weight using tfidf
-			Vector vector = new RandomAccessSparseVector(10000);
-			TFIDF tfidf = new TFIDF();
-			for (Multiset.Entry<String> entry:words.entrySet()) {
-				String word = entry.getElement();
-				int count = entry.getCount();
-				Integer wordId = dictionary.get(word);
-				Long freq = documentFrequency.get(wordId);
-				double tfIdfValue = tfidf.calculate(count, freq.intValue(), wordCount, documentCount);
-				vector.setQuick(wordId, tfIdfValue);
-			}
-			// With the classifier, we get one score for each label 
-			// The label with the highest score is the one the tweet is more likely to
-			// be associated to
-			Vector resultVector = classifier.classifyFull(vector);
-			double bestScore = -Double.MAX_VALUE;
-			int bestCategoryId = -1;
-			for(Element element: resultVector.all()) {
-				int categoryId = element.index();
-				double score = element.get();
-				if (score > bestScore) {
-					bestScore = score;
-					bestCategoryId = categoryId;
-				}
-			}
-			System.out.println(labels.get(bestCategoryId) + "\t" + tweet);
-		}
-		analyzer.close();
-		reader.close();
-	}
+            // create vector wordId => weight using tfidf
+            Vector vector = new RandomAccessSparseVector(10000);
+            TFIDF tfidf = new TFIDF();
+            for (Multiset.Entry<String> entry:words.entrySet()) {
+                String word = entry.getElement();
+                int count = entry.getCount();
+                Integer wordId = dictionary.get(word);
+                Long freq = documentFrequency.get(wordId);
+                double tfIdfValue = tfidf.calculate(count, freq.intValue(), wordCount, documentCount);
+                vector.setQuick(wordId, tfIdfValue);
+            }
+            // With the classifier, we get one score for each label 
+            // The label with the highest score is the one the tweet is more likely to
+            // be associated to
+            Vector resultVector = classifier.classifyFull(vector);
+            double bestScore = -Double.MAX_VALUE;
+            int bestCategoryId = -1;
+            for(Element element: resultVector.all()) {
+                int categoryId = element.index();
+                double score = element.get();
+                if (score > bestScore) {
+                    bestScore = score;
+                    bestCategoryId = categoryId;
+                }
+            }
+            System.out.println(labels.get(bestCategoryId) + "\t" + tweet);
+        }
+        analyzer.close();
+        reader.close();
+    }
 }

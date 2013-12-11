@@ -21,40 +21,40 @@ import org.jsoup.nodes.Document;
 
 public class MapRed {
 
-	public static class Map extends MapReduceBase implements Mapper<Text, BytesWritable, NullWritable, Text> {
-		private FrenchAnalyzer analyzer = new FrenchAnalyzer(Version.LUCENE_43);
-				
-		@Override
-		public void map(Text key, BytesWritable value, OutputCollector<NullWritable, Text> output, Reporter reporter) throws IOException { 
-			// Reading bytes from WholeInputFile
-			byte[] raw = value.getBytes();
-		    int size = raw.length;
-		    InputStream is = null;
-		    byte[] b = new byte[size];
-		    is = new ByteArrayInputStream(raw);
-		    is.read(b);
-		    
-		    // Parsing HTML
-		    Document doc = Jsoup.parse(new String(b));
-		    String content = doc.text();
-		    
-		    // Tokenizing content
-		    StringReader sr = new StringReader(content);
-		    StringBuffer sw = new StringBuffer();
-		    
-	    	TokenStream stream = analyzer.tokenStream("text", sr);
-	    	CharTermAttribute cattr = stream.addAttribute(CharTermAttribute.class);
-	      
-	        stream.reset();
-	        while (stream.incrementToken()) {
-	        	sw.append(cattr.toString() + " ");
-	        }
-	        
-	        sr.close();
-	        stream.close();
-		    
-	        // Writing output
-	        output.collect(NullWritable.get(), new Text(sw.toString()));
-		}
-	}
+    public static class Map extends MapReduceBase implements Mapper<Text, BytesWritable, NullWritable, Text> {
+        private FrenchAnalyzer analyzer = new FrenchAnalyzer(Version.LUCENE_43);
+                
+        @Override
+        public void map(Text key, BytesWritable value, OutputCollector<NullWritable, Text> output, Reporter reporter) throws IOException { 
+            // Reading bytes from WholeInputFile
+            byte[] raw = value.getBytes();
+            int size = raw.length;
+            InputStream is = null;
+            byte[] b = new byte[size];
+            is = new ByteArrayInputStream(raw);
+            is.read(b);
+            
+            // Parsing HTML
+            Document doc = Jsoup.parse(new String(b));
+            String content = doc.text();
+            
+            // Tokenizing content
+            StringReader sr = new StringReader(content);
+            StringBuffer sw = new StringBuffer();
+            
+            TokenStream stream = analyzer.tokenStream("text", sr);
+            CharTermAttribute cattr = stream.addAttribute(CharTermAttribute.class);
+          
+            stream.reset();
+            while (stream.incrementToken()) {
+                sw.append(cattr.toString() + " ");
+            }
+            
+            sr.close();
+            stream.close();
+            
+            // Writing output
+            output.collect(NullWritable.get(), new Text(sw.toString()));
+        }
+    }
 }
