@@ -1,9 +1,7 @@
 # Mahout Classification
+Assignment for the **Data Scientist** course at ECE Paris (2013). The goal is to pull tweets containing the hashtag `#edf` and determine if the tweet is about [Électricité de France](http://france.edf.com/france-45634.html) (French company) or [Équipe de France](http://www.fff.fr/) (France's national soccer team).
 
-```
-Thibault Charbonnier
-Guillaume Naudin
-```
+## Implementations
 
 I made two implementations: `tweets-implementation`, based on an [example](http://chimpler.wordpress.com/2013/03/13/using-the-mahout-naive-bayes-classifier-to-automatically-classify-twitter-messages/) on the Internet that I have adapted to my needs, to test and understand how Mahout works. And one following the guidelines for the assignment in `website-implementation`.
 
@@ -13,7 +11,7 @@ Tested on the Hortonworks sandbox.
 
 ## website-implementation
 
-Crawl data from websites, run a map job on it to extract content from HTML through Jsoup and Lucene. Then train and test with mahout.
+Crawl data from websites, run a map job on it to extract content from HTML through Jsoup and Lucene. Then train and classify with mahout.
 
 ### Make it run
 
@@ -31,7 +29,7 @@ Crawl data from websites, run a map job on it to extract content from HTML throu
 
 The script allows you to train and test the data. Type 1 and train it.
 
-#### Classify real data
+### Classify real data
 
 - Fetch some data to test
 
@@ -49,7 +47,7 @@ From there tell the script you want to classify real data (2)
 
 ## tweets-implementation
 
-Fetch tweets with a Python script. Provide a file with some classified tweets to create the vectors (I did this already on ~60 tweets, not enough but it's boring). Then create vectors from that file, and train and test mahout on it. It can even test a real data set to classify it.
+Fetch tweets with a Python script. Provide a file with some manually classified tweets to create the vectors (I did this already on ~60 tweets, not enough but it's boring). Then create vectors from that file, and train and test Mahout on it. It can even test a real data set to classify it.
 
 ### Make it run
 
@@ -67,7 +65,7 @@ Fetch tweets with a Python script. Provide a file with some classified tweets to
 
 The script ask you if you want to train mahout or test real data, first train mahout (2)
 
-#### Classify real data
+### Classify real data
 
 - Fetch some data to test
 
@@ -82,4 +80,3 @@ The script needs the [tweepy](https://github.com/tweepy/tweepy) module. But I ha
 `./run.sh`
 
 From there tell the script you want to classify real data (2)
-
