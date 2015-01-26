@@ -1,5 +1,9 @@
 # Mahout Classification
-Assignment for the **Data Scientist** course at ECE Paris (2013). The goal is to pull tweets containing the hashtag `#edf` and determine if the tweet is about [Électricité de France](http://france.edf.com/france-45634.html) (French company) or [Équipe de France](http://www.fff.fr/) (France's national soccer team).
+Assignment for the **Data Scientist** course at ECE Paris (2013).
+
+The goal is to pull tweets containing the hashtag `#edf` and determine if the tweet is about [Électricité de France](http://france.edf.com/france-45634.html) (French company) or [Équipe de France](http://www.fff.fr/) (France's national soccer team).
+
+This was a real use case for EDF (the company) when they wanted to perform sentiment analysis on Twitter last year.
 
 ## Implementations
 
